@@ -14,11 +14,35 @@
 
 ### Program:
 ### Create employee table
-
+create table employeee(empid number,empname varchar (10), dept varchar (10) ,salary
+number);
 ### Create salary_log table
+create table salary_log(log_id number,empid NUMBER,empname VARCHAR(10),old_salary
+NUMBER,new_salary NUMBER,update_date DATE);
 
 ### PLSQL Trigger code
+CREATE OR REPLACE TRIGGER log_salary_update
+BEFORE UPDATE ON employee
+FOR EACH ROW
+DECLARE
+v_old_salary NUMBER;
+v_new_salary NUMBER;
+BEGIN
+v_old_salary := :OLD.salary;
+v_new_salary := :NEW.salary;
+IF v_old_salary <> v_new_salary THEN
+INSERT INTO salary_log
+(empid,empname,old_salary,new_salary,update_date)
+VALUES(:OLD.empid, :OLD.empname,v_old_salary,v_new_salary,
+SYSDATE);
+END IF;
+END;
+/
 
 ### Output:
+![image](https://github.com/dineshgl/Ex-5-Creating-Triggers-using-PL-SQL/assets/118668751/e0357cac-2cf4-485b-a8e1-6bf2c899adda)
+![image](https://github.com/dineshgl/Ex-5-Creating-Triggers-using-PL-SQL/assets/118668751/e568f622-4d22-4602-8d4c-da566ae5bc70)
+![image](https://github.com/dineshgl/Ex-5-Creating-Triggers-using-PL-SQL/assets/118668751/cdeea9d4-af44-4f92-bbc4-50819df56546)
 
 ### Result:
+THE PROGRAM FOR TRIGGER WAS CREATED AND EXECUTED SUCCESSFULLY.
